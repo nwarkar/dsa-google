@@ -1,7 +1,6 @@
 package org.practice;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 
 /*
 Input: s = "abcabcbb"
@@ -16,33 +15,22 @@ Explanation: The answer is "b", with the length of 1.
 public class LongestSubstringWithoutRepeatingCharacter {
 
     public static void main(String[] args) {
-        System.out.println(lengthOfLongestSubstring("dvdf"));
+        System.out.println(lengthOfLongestSubstring("c"));
     }
     public static int lengthOfLongestSubstring(String s) {
-        if (s == null || s.isEmpty()) return 0;
-        if (s.equals(" ")) return 1;
+        int max =0;
         int start = 0;
         int end = s.length();
-        Map<Character, Integer> map = new HashMap<>();
-        int maxLenght = 0;
-        StringBuilder subString = new StringBuilder();
-        while (start < end) {
-            Character c = s.charAt(start);
-            if(!map.containsKey(s.charAt(start))) {
-                map.put(c, start);
-                subString.append(c);
-            } else {
-                map = new HashMap<>();
-                subString = new StringBuilder();
-                map.put(c, start);
-                subString.append(c);
+        HashSet<Character> seen = new HashSet<>();
+        for (int j = 0; j < end; j++) {
+            Character ch = s.charAt(j);
+            while (seen.contains(ch)) {
+                seen.remove(s.charAt(start++));
             }
-            if(maxLenght < subString.length()) {
-                maxLenght = subString.length();
-            }
-            start++;
+            seen.add(ch);
+            max = Math.max(max, j-start +1);
         }
-        return maxLenght == 0? map.size() : maxLenght ;
+        return max;
     }
 
 }
